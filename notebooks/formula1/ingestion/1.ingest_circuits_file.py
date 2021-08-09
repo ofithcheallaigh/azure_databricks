@@ -40,3 +40,59 @@ circuits_df.show()
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC The above show() command is useful, but truncates the data, we can use the display command also:
+
+# COMMAND ----------
+
+display(circuits_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Looking at the data we can see that it hasn't identified the correct header, so to do this, we can use the following command:
+
+# COMMAND ----------
+
+circuits_df = spark.read.option("header", True).csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
+
+# COMMAND ----------
+
+display(circuits_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC We can now see that we have the correct header in place for the DataFrame. Next we will print the schema
+
+# COMMAND ----------
+
+circuits_df.printSchema()
+
+# COMMAND ----------
+
+circuits_df.describe().show()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC The schema doesn't look right -- everything is set as a string, when some should be ints or doubles. We can try to make the schema more, correct, with the following code, mist of which has been used above:
+
+# COMMAND ----------
+
+circuits_df = spark.read \
+.option("header", True) \
+.option("inferSchema", True) \
+.csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
+
+# COMMAND ----------
+
+circuits_df.printSchema()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC This schema is fine. However, the better way would be to decide on the schema and have the data apply to it. 
+
+# COMMAND ----------
+
