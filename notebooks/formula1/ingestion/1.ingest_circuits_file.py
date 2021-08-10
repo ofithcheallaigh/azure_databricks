@@ -14,6 +14,28 @@ circuits_df = spark.read.csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Below, we are going to define our schema. This will be used on down insteat of the option to infer schema
+
+# COMMAND ----------
+
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType, DoubleType
+
+# COMMAND ----------
+
+circuits_schema = StructType(fields=[StructField("circuitID", IntegerType(), False),
+                                     StructField("circuitRef", StringType(), False),
+                                     StructField("name", StringType(), False),
+                                     StructField("location", StringType(), False),
+                                     StructField("country", StringType(), False),
+                                     StructField("lat", DoubleType(), False),
+                                     StructField("lng", DoubleType(), False),
+                                     StructField("alt", IntegerType(), False),
+                                     StructField("url", StringType(), False)
+])
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC The two cells below are used to find the location of the data which can then be used on the cell above.
 
 # COMMAND ----------
@@ -82,7 +104,7 @@ circuits_df.describe().show()
 
 circuits_df = spark.read \
 .option("header", True) \
-.option("inferSchema", True) \
+.schema(circuits_schema) \
 .csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
 
 # COMMAND ----------
