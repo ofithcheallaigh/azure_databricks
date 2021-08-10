@@ -115,6 +115,12 @@ circuits_df.printSchema()
 
 # MAGIC %md
 # MAGIC This schema is fine. However, the better way would be to decide on the schema and have the data apply to it. 
+# MAGIC 
+# MAGIC Omnce schema has been changed, it we can display the DF below
+
+# COMMAND ----------
+
+display(circuits_df)
 
 # COMMAND ----------
 
