@@ -124,3 +124,46 @@ display(circuits_df)
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ### Select only the required columns
+
+# COMMAND ----------
+
+circuits_selected_df = circuits_df.select("circuitID", "circuitRef","name","location","country","lat","lng","alt")
+
+# COMMAND ----------
+
+circuits_selected_df = circuits_df.select(circuits_df.circuitID, circuits_df.circuitRef,circuits_df.name,circuits_df.location,circuits_df.country,circuits_df.lat,circuits_df.lng,circuits_df.alt)
+
+# COMMAND ----------
+
+circuits_selected_df = circuits_df.select(circuits_df["circuitID"],circuits_df["circuitRef"],circuits_df["name"],circuits_df["location"],
+                                          circuits_df["country"],circuits_df["lat"],circuits_df["lng"],circuits_df["alt"])
+
+# COMMAND ----------
+
+display(circuits_selected_df)
+
+# COMMAND ----------
+
+from pyspark.sql.functions import col
+
+# COMMAND ----------
+
+circuits_selected_df = circuits_df.select(col("circuitID"),col("circuitRef"),col("name"),col("location"),col("country"),col("lat"),col("lng"),col("alt"))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Using any of the last three methods allows us to apply functions to the data we are selecting
+
+# COMMAND ----------
+
+circuits_selected_df = circuits_df.select(col("circuitID"),col("circuitRef"),col("name"),col("location"),col("country").alias("race_country"),col("lat"),col("lng"),col("alt"))
+
+# COMMAND ----------
+
+display(circuits_selected_df)
+
+# COMMAND ----------
+
