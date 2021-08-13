@@ -125,7 +125,7 @@ display(circuits_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### Select only the required columns
+# MAGIC #### Step 2: Select only the required columns
 
 # COMMAND ----------
 
@@ -168,7 +168,7 @@ display(circuits_selected_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ####Renaming columns as required
+# MAGIC #### Step 3: Renaming columns as required
 
 # COMMAND ----------
 
@@ -185,7 +185,7 @@ display(circuits_renamed_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### Adding ingestion data to the dataframe
+# MAGIC #### Step 4: Adding ingestion data to the dataframe
 
 # COMMAND ----------
 
@@ -194,6 +194,16 @@ from pyspark.sql.functions import current_timestamp
 # COMMAND ----------
 
 circuits_final_df = circuits_renamed_df.withColumn("ingestion_date", current_timestamp()) 
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### Step 5: Write data to datalake as parquet file
+
+# COMMAND ----------
+
+circuits_final_df.write.mode("overwrite").parquet("/mnt/formula1dlsof/process/circuits")
+# overwrite allows us to keep writing data, otherwise would get an error becuase file and path already exists.
 
 # COMMAND ----------
 
