@@ -184,3 +184,16 @@ display(circuits_renamed_df)
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC #### Adding ingestion data to the dataframe
+
+# COMMAND ----------
+
+from pyspark.sql.functions import current_timestamp
+
+# COMMAND ----------
+
+circuits_final_df = circuits_renamed_df.withColumn("ingestion_date", current_timestamp()) 
+
+# COMMAND ----------
+
