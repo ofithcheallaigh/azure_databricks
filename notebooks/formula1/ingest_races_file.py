@@ -31,10 +31,6 @@ races_schema = StructType(fields=[StructField("raceId", IntegerType(), False),
 
 # COMMAND ----------
 
-display(races_df)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC #### Step 2: Add ingestion date and race_timestamp to the dataframe
 
@@ -49,16 +45,20 @@ races_with_timestamp_df = races_df.withColumn("ingestion_date", current_timestam
 
 # COMMAND ----------
 
-display(races_with_timestamp_df)
-
-# COMMAND ----------
-
-# MAGIC %md #### Step 3: Select only the columns required
+# MAGIC %md #### Step 3: Select only the columns required & renaming as required
 
 # COMMAND ----------
 
 races_select_df = races_with_timestamp_df.select(col("raceId").alias("race_id"), col("year").alias("race_year"), col("round"), col("circuitId").alias("circuit_id"),
                                                                                                    col("name"), col("ingestion_date"), col("race_timestamp"))
+
+# COMMAND ----------
+
+# MAGIC %md #### Step 4: Write the output to process container in parquet format
+
+# COMMAND ----------
+
+races_select_df.write.mode('overwrite').parquet('/mnt/formula1dlsof/process/races')
 
 # COMMAND ----------
 
