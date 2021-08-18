@@ -21,7 +21,7 @@ constructors_df = spark.read \
 
 # COMMAND ----------
 
-# display(constructors_df)
+display(constructors_df)
 
 # COMMAND ----------
 
