@@ -64,7 +64,7 @@ drivers_with_columns_df = drivers_df.withColumnRenamed("driverId", "driver_id") 
 
 # COMMAND ----------
 
-display(drivers_with_columns_df)
+# display(drivers_with_columns_df)
 
 # COMMAND ----------
 
@@ -75,11 +75,23 @@ display(drivers_with_columns_df)
 
 # COMMAND ----------
 
+# MAGIC %md forename and surname got modified into 'name'
 
+# COMMAND ----------
+
+drivers_final_df = drivers_with_columns_df.drop(col('url'))
 
 # COMMAND ----------
 
 # MAGIC %md #### Write the output to processed container in parquet format
+
+# COMMAND ----------
+
+drivers_final_df.write.mode('overwrite').parquet("/mnt/formula1dlsof/process/drivers")
+
+# COMMAND ----------
+
+# display(spark.read.parquet("/mnt/formula1dlsof/process/drivers"))
 
 # COMMAND ----------
 
