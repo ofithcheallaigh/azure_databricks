@@ -9,6 +9,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/configuration"
+
+# COMMAND ----------
+
 circuits_df = spark.read.csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
 
 # COMMAND ----------
@@ -105,7 +109,7 @@ circuits_df.describe().show()
 circuits_df = spark.read \
 .option("header", True) \
 .schema(circuits_schema) \
-.csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
+.csv(f"{raw_folder_path}/circuits.csv")
 
 # COMMAND ----------
 
@@ -202,7 +206,7 @@ circuits_final_df = circuits_renamed_df.withColumn("ingestion_date", current_tim
 
 # COMMAND ----------
 
-circuits_final_df.write.mode("overwrite").parquet("/mnt/formula1dlsof/process/circuits")
+circuits_final_df.write.mode("overwrite").parquet(f"{process_folder_path}/circuits")
 # overwrite allows us to keep writing data, otherwise would get an error becuase file and path already exists.
 
 # COMMAND ----------
