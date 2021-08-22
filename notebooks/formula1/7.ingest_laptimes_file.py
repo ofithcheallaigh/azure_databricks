@@ -1,9 +1,9 @@
 # Databricks notebook source
-# MAGIC %md ### Ingest pit_stops.json file
+# MAGIC %md ### Ingest lap_times folder
 
 # COMMAND ----------
 
-# MAGIC %md #### Step 1: Read the JSON file using the spark dataframe reader API
+# MAGIC %md #### Step 1: Read the CSV file using the spark dataframe reader API
 
 # COMMAND ----------
 
@@ -12,21 +12,19 @@ from pyspark.sql.functions import current_timestamp, col
 
 # COMMAND ----------
 
-pit_stop_schema = StructType(fields=[StructField("raceId", IntegerType(), False),
+lap_times_schema = StructType(fields=[StructField("raceId", IntegerType(), False),
                                      StructField("driverId", IntegerType(), True),
-                                     StructField("stop", StringType(), True),
                                      StructField("lap", IntegerType(), True),
+                                     StructField("position", IntegerType(), True),
                                      StructField("time", StringType(), True),
-                                     StructField("duration", StringType(), True),
                                      StructField("milliseconds", IntegerType(), True) 
 ])
 
 # COMMAND ----------
 
-pit_stops_df = spark.read\
-.schema(pit_stop_schema)\
-.option("multiline",True)\
-.json("/mnt/formula1dlsof/raw/pit_stops.json")
+lap_times_df = spark.read\
+.schema(lap_times_schema)\
+.csv("/mnt/formula1dlsof/raw/lap_times")
 
 # COMMAND ----------
 
@@ -36,7 +34,7 @@ pit_stops_df = spark.read\
 
 # COMMAND ----------
 
-final_df = pit_stops_df.withColumnRenamed("raceId", "race_id")\
+final_df = lap_times_df.withColumnRenamed("raceId", "race_id")\
                        .withColumnRenamed("driverId", "driver_id")\
                        .withColumn("ingestion_date", current_timestamp())
 
@@ -46,7 +44,11 @@ final_df = pit_stops_df.withColumnRenamed("raceId", "race_id")\
 
 # COMMAND ----------
 
-final_df.write.mode("overwrite").parquet("/mnt/formula1dlsof/process/pit_stops")
+final_df.write.mode("overwrite").parquet("/mnt/formula1dlsof/process/lap_times")
+
+# COMMAND ----------
+
+display(spark.read.parquet("/mnt/formula1dlsof/process/lap_times"))
 
 # COMMAND ----------
 
