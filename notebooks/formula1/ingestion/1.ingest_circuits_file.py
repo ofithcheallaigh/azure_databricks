@@ -13,6 +13,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/common_functions"
+
+# COMMAND ----------
+
 circuits_df = spark.read.csv("dbfs:/mnt/formula1dlsof/raw/circuits.csv")
 
 # COMMAND ----------
@@ -197,7 +201,8 @@ from pyspark.sql.functions import current_timestamp
 
 # COMMAND ----------
 
-circuits_final_df = circuits_renamed_df.withColumn("ingestion_date", current_timestamp()) 
+circuits_final_df = add_ingestion_date(circuits_renamed_df)
+# circuits_final_df = circuits_renamed_df.withColumn("ingestion_date", current_timestamp()) 
 
 # COMMAND ----------
 
